@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "react_native_learning",
+    "name": "Frontend Quiz",
     "slug": "react_native_learning",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/shared/assets/images/quiz_front.jpg",
     "scheme": "reactnativelearning",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./src/shared/assets/images/quiz_front.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,21 +18,43 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/shared/assets/images/quiz_front.jpg",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.ozod2905.react_native_learning"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./src/shared/assets/images/quiz_front.jpg"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ac2725b7-aae6-4666-a452-8f18544401cd"
+      }
+    },
+    "owner": "ozod2905"
   }
 }
