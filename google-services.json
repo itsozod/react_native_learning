@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641170963326",
+    "project_id": "quiz-app-61b96",
+    "storage_bucket": "quiz-app-61b96.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641170963326:android:04ea114a07d2372db3912f",
+        "android_client_info": {
+          "package_name": "com.ozod2905.react_native_learning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKtxxwNoae2YWXZsk-lHOZwHjnZjz3_Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

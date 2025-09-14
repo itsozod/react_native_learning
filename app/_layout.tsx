@@ -47,12 +47,13 @@ function RootLayoutNav() {
   return (
     <Providers>
       <Stack>
+        <Stack.Screen name="(auth)/index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
-          name="modal"
+          name="quiz/[id]"
           options={{
             presentation: "transparentModal",
-            title: "Dev",
+            title: "Questions",
           }}
         />
       </Stack>

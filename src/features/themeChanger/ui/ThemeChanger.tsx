@@ -12,8 +12,6 @@ const ThemeChanger = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Theme settings</Text>
-
       {themes?.map((theme) => {
         return (
           <Pressable
@@ -56,9 +54,7 @@ const ThemeChanger = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     alignItems: "center",
-    height: "100%",
     gap: 10,
   },
   title: {
