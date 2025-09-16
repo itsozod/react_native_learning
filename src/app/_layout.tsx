@@ -1,10 +1,10 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Providers from "@providers/Providers";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import Providers from "./providers";
+import Layout from "src/widgets/Layout";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,7 +21,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../src/shared/assets/fonts/SpaceMono-Regular.ttf"),
+    SpaceMono: require("@shared/assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
 
@@ -46,17 +46,7 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <Providers>
-      <Stack>
-        <Stack.Screen name="(auth)/index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="quiz/[id]"
-          options={{
-            presentation: "transparentModal",
-            title: "Questions",
-          }}
-        />
-      </Stack>
+      <Layout />
     </Providers>
   );
 }

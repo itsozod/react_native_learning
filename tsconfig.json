@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
+      "@providers/*": ["src/providers/*"],
       "@shared/*": ["src/shared/*"],
       "@features/*": ["src/features/*"],
       "@entities/*": ["src/entities/*"],    

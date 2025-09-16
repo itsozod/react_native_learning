@@ -3,11 +3,11 @@ import Profile from "./ui/Profile";
 import { Text, View } from "@shared/ui/Themed";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "@shared/hooks/useTheme";
-import { auth } from "FirebaseConfig";
-import { signOut } from "@firebase/auth";
+import useAuth from "@shared/hooks/useAuth";
 
 export default function SettingsScreen() {
   const { colors } = useTheme();
+  const { logOut } = useAuth();
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Profile />
@@ -15,7 +15,7 @@ export default function SettingsScreen() {
       <TouchableOpacity
         style={styles.log_out}
         onPress={() => {
-          signOut(auth);
+          logOut();
         }}
       >
         <Text style={styles.log_out_text}>Log out</Text>
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 20,
     height: "100%",
-    // alignItems: "center",
   },
   log_out: {
     backgroundColor: "red",

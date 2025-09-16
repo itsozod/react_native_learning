@@ -2,16 +2,27 @@ import useAuth from "@shared/hooks/useAuth";
 import { useTheme } from "@shared/hooks/useTheme";
 import { Text, View } from "@shared/ui/Themed";
 import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import GoogleIcon from "@shared/assets/icons/google.svg";
 import FacebookIcon from "@shared/assets/icons/facebook.svg";
 import AppleIcon from "@shared/assets/icons/apple.svg";
+import { useMutation } from "@tanstack/react-query";
+import { Link } from "expo-router";
 
-const Login = () => {
+const SignUp = () => {
   const { colors } = useTheme();
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { mutate: signInMutate, isPending } = useMutation({
+    mutationFn: signIn,
+  });
 
   return (
     <View
@@ -30,12 +41,11 @@ const Login = () => {
           },
         ]}
       >
-        <Text style={{ color: "#1F41BB", fontWeight: "bold", fontSize: 30 }}>
-          Login here
+        <Text style={{ color: "#669bbc", fontWeight: "bold", fontSize: 30 }}>
+          Create new account
         </Text>
         <Text style={[styles.title, { color: colors.text }]}>
-          Welcome back you'have {"\n"}
-          been missed!
+          Create an account to enjoy quizzes!
         </Text>
       </View>
       <View
@@ -59,20 +69,22 @@ const Login = () => {
           placeholder="Password"
           secureTextEntry={true}
         />
-        <Text style={{ color: "#1F41BB", textAlign: "right" }}>
-          Forgot your password?
-        </Text>
         <TouchableOpacity
+          disabled={isPending}
           onPress={() => {
-            signIn(email, password);
+            signInMutate({ email, password });
           }}
           style={styles.sign_in}
         >
-          <Text style={styles.sign_in}>Sign in</Text>
+          {isPending && <ActivityIndicator />}
+          <Text style={styles.sign_in_text}>Sign in</Text>
         </TouchableOpacity>
-        <Text style={{ textAlign: "center", color: colors.text }}>
-          Create new account
-        </Text>
+        <Link
+          href="/(auth)"
+          style={{ textAlign: "center", color: colors.text }}
+        >
+          Already have an account
+        </Link>
       </View>
       <View
         style={[
@@ -82,7 +94,7 @@ const Login = () => {
           },
         ]}
       >
-        <Text style={{ color: "#1F41BB" }}>Or continue with</Text>
+        <Text style={{ color: "#669bbc" }}>Or continue with</Text>
         <View
           style={[
             styles.options_container,
@@ -129,9 +141,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F4FF",
   },
   sign_in: {
-    backgroundColor: "#1F41BB",
+    backgroundColor: "#669bbc",
     padding: 14,
     borderRadius: 8,
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
     width: "100%",
   },
   sign_in_text: {
@@ -150,5 +165,4 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
-
-export default Login;
+export default SignUp;

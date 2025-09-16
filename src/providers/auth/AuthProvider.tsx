@@ -1,43 +1,36 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
   User,
 } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig";
-import { useRouter } from "expo-router";
-
+import { router } from "expo-router";
 type AuthContextType = {
   user: User | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: ({ email, password }: SignIn) => Promise<void>;
+  logOut: () => void;
+  initializing: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   signIn: async () => {},
+  logOut: async () => {},
+  initializing: true,
 });
+
+interface SignIn {
+  email: string;
+  password: string;
+}
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+  const [initializing, setInitializing] = useState<boolean>(true);
 
-  const checkUser = () => {
-    try {
-      onAuthStateChanged(auth, (firebaseUser) => {
-        if (firebaseUser) {
-          setUser(firebaseUser);
-          router.replace("/(tabs)/home");
-        } else {
-          router.replace("/(auth)");
-        }
-      });
-    } catch (error) {
-      console.log("Error:", error);
-      alert("Error:" + error);
-    }
-  };
-
-  const signIn = async (email: string, password: string) => {
+  const signIn = async ({ email, password }: SignIn) => {
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
       if (data) {
@@ -50,14 +43,23 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const logOut = () => {
+    signOut(auth);
+    setUser(null);
+    router.replace("/(auth)");
+  };
+
   useEffect(() => {
-    const unsubscribe = checkUser();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setInitializing(false);
+    });
 
     return unsubscribe;
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn, initializing, logOut }}>
       {children}
     </AuthContext.Provider>
   );
