@@ -1,15 +1,19 @@
 import { createContext, useEffect, useState } from "react";
 import {
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   User,
 } from "firebase/auth";
-import { auth } from "../../../FirebaseConfig";
+import { auth } from "../../../../FirebaseConfig";
 import { router } from "expo-router";
+import { Alert } from "react-native";
+
 type AuthContextType = {
   user: User | null;
   signIn: ({ email, password }: SignIn) => Promise<void>;
+  signUp: ({ email, password }: SignIn) => Promise<void>;
   logOut: () => void;
   initializing: boolean;
 };
@@ -17,6 +21,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   signIn: async () => {},
+  signUp: async () => {},
   logOut: async () => {},
   initializing: true,
 });
@@ -36,6 +41,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data) {
         router.replace("/(tabs)/home");
       }
+    } catch (error) {
+      const e = error as Error;
+      console.log(e.message);
+      Alert.alert("Failed:" + e.message);
+    }
+  };
+  const signUp = async ({ email, password }: SignIn) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("User created successfully");
     } catch (error) {
       const e = error as Error;
       console.log(e.message);
@@ -59,7 +74,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, initializing, logOut }}>
+    <AuthContext.Provider
+      value={{ user, signIn, signUp, initializing, logOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

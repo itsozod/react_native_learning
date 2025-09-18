@@ -16,12 +16,12 @@ import { Link } from "expo-router";
 
 const SignUp = () => {
   const { colors } = useTheme();
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutate: signInMutate, isPending } = useMutation({
-    mutationFn: signIn,
+  const { mutate: signUpMutate, isPending } = useMutation({
+    mutationFn: signUp,
   });
 
   return (
@@ -72,12 +72,12 @@ const SignUp = () => {
         <TouchableOpacity
           disabled={isPending}
           onPress={() => {
-            signInMutate({ email, password });
+            signUpMutate({ email, password });
           }}
           style={styles.sign_in}
         >
           {isPending && <ActivityIndicator />}
-          <Text style={styles.sign_in_text}>Sign in</Text>
+          <Text style={styles.sign_in_text}>Sign up</Text>
         </TouchableOpacity>
         <Link
           href="/(auth)"

@@ -4,14 +4,19 @@
     "slug": "react_native_learning",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/shared/assets/images/quiz_front.jpg",
+    "icon": "",
     "scheme": "reactnativelearning",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./src/shared/assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./src/shared/assets/images/icon1.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "./src/shared/assets/images/icon1.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#000000"
+      }
     },
     "ios": {
       "supportsTablet": true,
@@ -20,8 +25,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/shared/assets/images/quiz_front.jpg",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/shared/assets/images/adaptive-icon1.png",
+        "backgroundColor": "#669bbc"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.ozod2905.react_native_learning",
@@ -30,7 +35,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./src/shared/assets/images/quiz_front.jpg"
+      "favicon": "./src/shared/assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
