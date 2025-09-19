@@ -35,28 +35,18 @@ export default function HomeScreen() {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View
-        style={[styles.title_container, { backgroundColor: colors.background }]}
-      >
-        <Text style={[styles.title, { color: colors.text }]}>
-          Welcome to the
-        </Text>
-        <Text style={[styles.sub_title, { color: colors.text }]}>
-          Frontend Quiz!
-        </Text>
-        <Text style={{ color: colors.text }}>
-          Pick up a subject to get started
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.title_container}>
+        <Text style={styles.title}>Welcome to the</Text>
+        <Text style={styles.sub_title}>Frontend Quiz!</Text>
+        <Text>Pick up a subject to get started</Text>
       </View>
       <View
         style={[styles.separator, { backgroundColor: colors.separatorColor }]}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <View
-        style={[styles.quiz_container, { backgroundColor: colors.background }]}
-      >
+      <View style={styles.quiz_container}>
         {quizes.map((quiz) => {
           return (
             <TouchableOpacity
@@ -72,7 +62,7 @@ export default function HomeScreen() {
               }}
             >
               {quiz.icon}
-              <Text style={{ color: colors.text }}>{quiz.name}</Text>
+              <Text>{quiz.name}</Text>
             </TouchableOpacity>
           );
         })}

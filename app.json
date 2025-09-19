@@ -46,7 +46,9 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

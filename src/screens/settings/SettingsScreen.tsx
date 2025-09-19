@@ -2,14 +2,12 @@ import { ThemeChanger } from "@features/themeChanger";
 import Profile from "./ui/Profile";
 import { Text, View } from "@shared/ui/Themed";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useTheme } from "@shared/hooks/useTheme";
 import useAuth from "@shared/hooks/useAuth";
 
 export default function SettingsScreen() {
-  const { colors } = useTheme();
   const { logOut } = useAuth();
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
       <Profile />
       <ThemeChanger />
       <TouchableOpacity

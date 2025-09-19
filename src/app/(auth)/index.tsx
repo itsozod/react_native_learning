@@ -1,173 +1,96 @@
-import useAuth from "@shared/hooks/useAuth";
-import { useTheme } from "@shared/hooks/useTheme";
 import { Text, View } from "@shared/ui/Themed";
-import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import GoogleIcon from "@shared/assets/icons/google.svg";
-import FacebookIcon from "@shared/assets/icons/facebook.svg";
-import AppleIcon from "@shared/assets/icons/apple.svg";
-import { useMutation } from "@tanstack/react-query";
-import { Link, Redirect } from "expo-router";
+import { router } from "expo-router";
+import React from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const SignIn = () => {
-  const { colors } = useTheme();
-  const { signIn } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const { mutate: signInMutate, isPending } = useMutation({
-    mutationFn: signIn,
-  });
-
+const GettingStarted = () => {
   return (
-    <View
-      style={[
-        styles.login_container,
-        {
-          backgroundColor: colors.background,
-        },
-      ]}
-    >
-      <View
-        style={[
-          styles.title_container,
-          {
-            backgroundColor: colors.background,
-          },
-        ]}
-      >
-        <Text style={{ color: "#669bbc", fontWeight: "bold", fontSize: 30 }}>
-          Login here
-        </Text>
-        <Text style={[styles.title, { color: colors.text }]}>
-          Welcome back you'have {"\n"}
-          been missed!
+    <View style={[styles.container]}>
+      <View style={styles.img_container}>
+        <Image
+          source={require("../../shared/assets/images//getting-started.png")}
+          style={styles.getting_started_img}
+        />
+        <Text style={[styles.text]}>
+          Find interesting frontend quizzes to boost up your {"\n"}
+          knowledge
         </Text>
       </View>
-      <View
-        style={[
-          styles.input_container,
-          {
-            backgroundColor: colors.background,
-          },
-        ]}
-      >
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          placeholder="Email"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-        <Text style={{ color: "#669bbc", textAlign: "right" }}>
-          Forgot your password?
-        </Text>
+      <View style={styles.btns_container}>
         <TouchableOpacity
-          disabled={isPending}
-          onPress={() => {
-            signInMutate({ email, password });
-          }}
-          style={styles.sign_in}
+          style={styles.getting_started_btn}
+          onPress={() => router.replace("/(auth)/register")}
         >
-          {isPending && <ActivityIndicator />}
-          <Text style={styles.sign_in_text}>Sign in</Text>
+          <Text style={styles.getting_started_text}>GETTING STARTED</Text>
         </TouchableOpacity>
-        <Link
-          href="/(auth)/register"
-          style={{ textAlign: "center", color: colors.text }}
+        <TouchableOpacity
+          style={styles.have_acc_btn}
+          onPress={() => router.replace("/(auth)/login")}
         >
-          Create new account
-        </Link>
-      </View>
-      <View
-        style={[
-          styles.sign_in_options_container,
-          {
-            backgroundColor: colors.background,
-          },
-        ]}
-      >
-        <Text style={{ color: "#669bbc" }}>Or continue with</Text>
-        <View
-          style={[
-            styles.options_container,
-            {
-              backgroundColor: colors.background,
-            },
-          ]}
-        >
-          <GoogleIcon />
-          <FacebookIcon />
-          <AppleIcon />
-        </View>
+          <Text style={styles.have_acc_text}>I ALREADY HAVE AN ACCOUNT</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  login_container: {
-    padding: 40,
-    justifyContent: "center",
-    alignItems: "center",
+  container: {
+    width: "100%",
+    padding: 30,
     height: "100%",
-    gap: 40,
   },
-  title_container: {
+  img_container: {
+    backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
-    gap: 26,
   },
-  title: {
-    fontWeight: "semibold",
-    fontSize: 20,
+  getting_started_img: {
+    objectFit: "contain",
+    width: "100%",
+    height: 450,
+  },
+  text: {
+    fontSize: 30,
+    fontWeight: "600",
     textAlign: "center",
+    lineHeight: 40,
   },
-  input_container: {
-    width: "100%",
-    gap: 30,
+  btns_container: {
+    backgroundColor: "transparent",
+    gap: 20,
+    marginTop: "auto",
   },
-  input: {
-    width: "100%",
-    borderRadius: 8,
+  getting_started_btn: {
+    backgroundColor: "#7C3AED",
     padding: 14,
-    backgroundColor: "#F1F4FF",
-  },
-  sign_in: {
-    backgroundColor: "#669bbc",
-    padding: 14,
-    borderRadius: 8,
+    borderRadius: 50,
     flexDirection: "row",
     gap: 10,
     justifyContent: "center",
     width: "100%",
   },
-  sign_in_text: {
+  getting_started_text: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "semibold",
     color: "#fff",
   },
-  sign_in_options_container: {
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 20,
-  },
-  options_container: {
+  have_acc_btn: {
+    backgroundColor: "#EDE9FE",
+    padding: 14,
+    borderRadius: 50,
     flexDirection: "row",
     gap: 10,
+    justifyContent: "center",
+    width: "100%",
+  },
+  have_acc_text: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "semibold",
+    color: "#7C3AED",
   },
 });
 
-export default SignIn;
+export default GettingStarted;

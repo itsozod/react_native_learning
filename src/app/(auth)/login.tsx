@@ -1,6 +1,8 @@
 import useAuth from "@shared/hooks/useAuth";
 import { useTheme } from "@shared/hooks/useTheme";
 import { Text, View } from "@shared/ui/Themed";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -8,18 +10,18 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+
 import { useMutation } from "@tanstack/react-query";
-import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
-const SignUp = () => {
+const SignIn = () => {
   const { colors } = useTheme();
-  const { signUp } = useAuth();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutate: signUpMutate, isPending } = useMutation({
-    mutationFn: signUp,
+  const { mutate: signInMutate, isPending } = useMutation({
+    mutationFn: signIn,
   });
 
   return (
@@ -31,14 +33,11 @@ const SignUp = () => {
           size={24}
           color={colors.text}
         />
-        <Text style={[styles.title]}>Create an account</Text>
-        <Text style={{ color: colors.text, fontSize: 18 }}>
-          Please enter your email and password
-        </Text>
+        <Text style={[styles.title]}>Hello there</Text>
       </View>
       <View style={[styles.input_container]}>
         <View>
-          <Text style={[styles.label]}>Email</Text>
+          <Text style={styles.label}>Email</Text>
           <TextInput
             style={{ color: colors.text }}
             keyboardType="email-address"
@@ -50,11 +49,11 @@ const SignUp = () => {
           />
           <View style={styles.separator} />
         </View>
-        <View style={{ backgroundColor: "transparent" }}>
+        <View>
           <Text style={styles.label}>Password</Text>
           <TextInput
-            value={password}
             style={{ color: colors.text }}
+            value={password}
             onChangeText={setPassword}
             secureTextEntry={true}
           />
@@ -67,12 +66,12 @@ const SignUp = () => {
         <TouchableOpacity
           disabled={isPending}
           onPress={() => {
-            signUpMutate({ email, password });
+            signInMutate({ email, password });
           }}
           style={styles.sign_in}
         >
           {isPending && <ActivityIndicator />}
-          <Text style={styles.sign_in_text}>SIGN UP</Text>
+          <Text style={styles.sign_in_text}>SIGN IN</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -86,16 +85,16 @@ const styles = StyleSheet.create({
     height: "100%",
     gap: 40,
   },
-  btn_separator: {
-    width: "100%",
-    marginTop: "auto",
-    height: 1,
-  },
   separator: {
     width: "100%",
     height: 1,
     marginVertical: 5,
     backgroundColor: "#7C3AED",
+  },
+  btn_separator: {
+    width: "100%",
+    marginTop: "auto",
+    height: 1,
   },
   title_container: {
     justifyContent: "center",
@@ -110,6 +109,12 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 30,
   },
+  input: {
+    width: "100%",
+    borderRadius: 8,
+    padding: 14,
+    backgroundColor: "#F1F4FF",
+  },
   label: {
     fontSize: 16,
     fontWeight: "600",
@@ -119,12 +124,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "600",
-  },
-  input: {
-    width: "100%",
-    borderRadius: 8,
-    padding: 14,
-    backgroundColor: "#F1F4FF",
   },
   sign_in_container: {
     backgroundColor: "transparent",
@@ -147,4 +146,5 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
-export default SignUp;
+
+export default SignIn;

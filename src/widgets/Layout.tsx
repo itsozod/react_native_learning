@@ -1,34 +1,21 @@
 import useAuth from "@shared/hooks/useAuth";
-import { useTheme } from "@shared/hooks/useTheme";
+import Loader from "@shared/ui/Loader";
 import { View } from "@shared/ui/Themed";
 import { Stack } from "expo-router";
-import { ActivityIndicator } from "react-native";
+import { StyleSheet } from "react-native";
 
 const Layout = () => {
   const { user, initializing } = useAuth();
-  const { colors } = useTheme();
 
   if (initializing)
     return (
-      <View
-        style={{
-          alignItems: "center",
-          height: "100%",
-          justifyContent: "center",
-          backgroundColor: colors.background,
-        }}
-      >
-        <ActivityIndicator size={"large"} />
+      <View style={styles.loader_container}>
+        <Loader size="large" />
       </View>
     );
 
   return (
-    <View
-      style={{
-        height: "100%",
-        backgroundColor: colors.background,
-      }}
-    >
+    <View style={styles.layout}>
       <Stack>
         <Stack.Protected guard={Boolean(user)}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -47,5 +34,16 @@ const Layout = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  layout: {
+    height: "100%",
+  },
+  loader_container: {
+    alignItems: "center",
+    height: "100%",
+    justifyContent: "center",
+  },
+});
 
 export default Layout;

@@ -1,16 +1,12 @@
 import useAuth from "@shared/hooks/useAuth";
-import { useTheme } from "@shared/hooks/useTheme";
 import { Text, View } from "@shared/ui/Themed";
 import { StyleSheet } from "react-native";
 
 const Profile = () => {
   const { user } = useAuth();
-  const { colors } = useTheme();
   return (
     <View style={styles.container}>
-      <Text style={[styles.welcome_text, { color: colors.text }]}>
-        Welcome {user?.email}
-      </Text>
+      <Text style={styles.welcome_text}>Welcome {user?.email}</Text>
     </View>
   );
 };

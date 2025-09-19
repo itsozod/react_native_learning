@@ -11,7 +11,7 @@ const ThemeChanger = () => {
   const [selected, setSelected] = useState<Theme>(theme);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
       {themes?.map((theme) => {
         return (
           <Pressable
@@ -22,7 +22,7 @@ const ThemeChanger = () => {
             }}
             style={[styles.button, { backgroundColor: colors.quizBtnBg }]}
           >
-            <View style={[styles.theme]}>
+            <View style={styles.theme}>
               {theme.icon}
               <Text
                 style={{
