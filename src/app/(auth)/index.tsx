@@ -1,7 +1,8 @@
+import { UI } from "@shared/ui";
 import { Text, View } from "@shared/ui/Themed";
 import { router } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet } from "react-native";
 
 const GettingStarted = () => {
   return (
@@ -17,18 +18,18 @@ const GettingStarted = () => {
         </Text>
       </View>
       <View style={styles.btns_container}>
-        <TouchableOpacity
+        <UI.Button
           style={styles.getting_started_btn}
-          onPress={() => router.replace("/(auth)/register")}
+          onPress={() => router.push("/(auth)/register")}
         >
           <Text style={styles.getting_started_text}>GETTING STARTED</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </UI.Button>
+        <UI.Button
           style={styles.have_acc_btn}
-          onPress={() => router.replace("/(auth)/login")}
+          onPress={() => router.push("/(auth)/login")}
         >
           <Text style={styles.have_acc_text}>I ALREADY HAVE AN ACCOUNT</Text>
-        </TouchableOpacity>
+        </UI.Button>
       </View>
     </View>
   );

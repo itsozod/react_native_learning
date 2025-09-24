@@ -2,9 +2,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View } from "@shared/ui/Themed";
 import { useTheme } from "@shared/hooks/useTheme";
 import { useState } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { themes } from "./themes";
 import { Theme } from "@entities/themeChanger";
+import { UI } from "@shared/ui";
 
 const ThemeChanger = () => {
   const { theme, colors, setTheme } = useTheme();
@@ -14,7 +15,7 @@ const ThemeChanger = () => {
     <View style={styles.container}>
       {themes?.map((theme) => {
         return (
-          <Pressable
+          <UI.Button
             key={theme.name}
             onPress={() => {
               setSelected(theme.name);
@@ -45,7 +46,7 @@ const ThemeChanger = () => {
                 color="#aaa"
               />
             )}
-          </Pressable>
+          </UI.Button>
         );
       })}
     </View>
@@ -81,11 +82,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    elevation: 5,
   },
 });
 

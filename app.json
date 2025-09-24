@@ -26,7 +26,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/shared/assets/images/adaptive-icon1.png",
-        "backgroundColor": "#669bbc"
+        "backgroundColor": "#fff"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.ozod2905.react_native_learning",

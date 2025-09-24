@@ -66,6 +66,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        console.log("User restored:", firebaseUser.uid);
+      }
       setUser(firebaseUser);
       setInitializing(false);
     });

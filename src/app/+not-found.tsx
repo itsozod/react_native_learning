@@ -2,15 +2,20 @@ import { Link, Stack } from "expo-router";
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "@shared/ui/Themed";
+import useAuth from "@shared/hooks/useAuth";
 
 export default function NotFoundScreen() {
+  const { user } = useAuth();
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
       <View style={styles.container}>
         <Text style={styles.title}>This screen doesn't exist.</Text>
 
-        <Link href="/(tabs)/home" style={styles.link}>
+        <Link
+          href={Boolean(user) ? "/(tabs)/home" : "/(auth)"}
+          style={styles.link}
+        >
           <Text style={styles.linkText}>Go to home screen!</Text>
         </Link>
       </View>

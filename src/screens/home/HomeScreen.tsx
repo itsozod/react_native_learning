@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { View, Text } from "@shared/ui/Themed";
 import HtmlIcon from "@shared/assets/icons/html.svg";
 import CssIcon from "@shared/assets/icons/css.svg";
@@ -6,6 +6,7 @@ import JsIcon from "@shared/assets/icons/js.svg";
 import ReactIcon from "@shared/assets/icons/react.svg";
 import { useRouter } from "expo-router";
 import { useTheme } from "@shared/hooks/useTheme";
+import { UI } from "@shared/ui";
 
 const quizes = [
   {
@@ -49,21 +50,16 @@ export default function HomeScreen() {
       <View style={styles.quiz_container}>
         {quizes.map((quiz) => {
           return (
-            <TouchableOpacity
+            <UI.Button
               key={quiz.id}
-              style={[
-                styles.button,
-                {
-                  backgroundColor: colors.quizBtnBg,
-                },
-              ]}
+              style={styles.button}
               onPress={() => {
                 router.push(`/quiz/${quiz.id}`);
               }}
             >
               {quiz.icon}
               <Text>{quiz.name}</Text>
-            </TouchableOpacity>
+            </UI.Button>
           );
         })}
       </View>
@@ -117,13 +113,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
     width: "100%",
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
   },
 });

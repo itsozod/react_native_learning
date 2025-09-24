@@ -1,24 +1,29 @@
-import { View } from "@shared/ui/Themed";
+import { useTheme } from "@shared/hooks/useTheme";
 import { Stack } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AuthLayout = () => {
+  const { colors } = useTheme();
   return (
-    <View style={styles.auth_layout}>
+    <SafeAreaView
+      style={[styles.auth_layout, { backgroundColor: colors.background }]}
+      edges={["top", "left", "right", "bottom"]}
+    >
       <Stack
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="index" />
+        <Stack.Screen name="index" options={{ animation: "none" }} />
         <Stack.Screen name="login" options={{ animation: "slide_from_left" }} />
         <Stack.Screen
           name="register"
           options={{ animation: "slide_from_right" }}
         />
       </Stack>
-    </View>
+    </SafeAreaView>
   );
 };
 

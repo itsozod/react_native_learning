@@ -7,6 +7,7 @@ import {
   ThemeProviderProps,
   ThemeProviderState,
 } from "@entities/themeChanger";
+import { useQuery } from "@tanstack/react-query";
 
 const initialState: ThemeProviderState = {
   theme: "light",
@@ -31,19 +32,20 @@ export default function ThemeProvider({
 
   const colors = effectiveTheme === "dark" ? Colors.dark : Colors.light;
 
-  useEffect(() => {
-    const getTheme = async () => {
+  useQuery({
+    queryKey: ["theme"],
+    queryFn: async () => {
       try {
         const value = await AsyncStorage.getItem("theme");
         if (value === "dark" || value === "light" || value === "system") {
           setThemeApp(value);
+          return value;
         }
       } catch (e) {
         console.log("Error loading theme", e);
       }
-    };
-    getTheme();
-  }, []);
+    },
+  });
 
   useEffect(() => {
     if (theme === "system" && systemTheme) {
