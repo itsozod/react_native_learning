@@ -1,58 +1,24 @@
 import { Text, View } from "@shared/ui/Themed";
 import { router, useLocalSearchParams } from "expo-router";
-import { ActivityIndicator, Modal, StyleSheet } from "react-native";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "FirebaseConfig";
-import { useQuery } from "@tanstack/react-query";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import { useState } from "react";
 import { UI } from "@shared/ui";
-import { QuizData, QuizIconData, QuizId } from "@entities/quiz";
-import HtmlIcon from "@shared/assets/icons/html.svg";
-import CssIcon from "@shared/assets/icons/css.svg";
-import JsIcon from "@shared/assets/icons/js.svg";
-import ReactIcon from "@shared/assets/icons/react.svg";
+import { QuizId } from "@entities/quiz";
 import { MaterialIcons } from "@expo/vector-icons";
-
-const quizIcons: QuizIconData = {
-  1: {
-    icon: <HtmlIcon width={24} height={24} />,
-  },
-  2: {
-    icon: <CssIcon width={24} height={24} />,
-  },
-  3: {
-    icon: <JsIcon width={24} height={24} />,
-  },
-  4: {
-    icon: <ReactIcon width={24} height={24} />,
-  },
-};
-
-const getQuizzes = async (id: string | string[]): Promise<QuizData | null> => {
-  const quizRef = doc(db, "quizzes", id as string);
-  const quizzes = await getDoc(quizRef);
-  if (quizzes.exists()) {
-    return quizzes.data() as QuizData;
-  } else {
-    return null;
-  }
-};
+import { quizIcons } from "./icons";
+import useGetQuizQuestions from "@features/quiz/hooks/useGetQuizQuestions";
+import ResultModal from "./ResultModal";
 
 const QuizQuestions = () => {
   const { id } = useLocalSearchParams();
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: [id],
-    queryFn: async () => getQuizzes(id),
-  });
-
-  const questionData = data?.questions;
-  const typeId = id as QuizId;
+  const { data, isLoading, isSuccess } = useGetQuizQuestions(id);
   const [questionCount, setQuestionCount] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [correctCount, setCorrectCount] = useState<number>(0);
   const [modalVisible, setIsModalVisible] = useState<boolean>(Boolean);
-
+  const questionData = data?.questions;
+  const typeId = id as QuizId;
   const currentQuestion = questionData?.[questionCount];
 
   const checkAnswer = () => {
@@ -110,7 +76,7 @@ const QuizQuestions = () => {
 
   if (isLoading)
     return (
-      <View style={styles.quiz_container}>
+      <View style={styles.loading_container}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -121,45 +87,32 @@ const QuizQuestions = () => {
 
   return (
     <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setIsModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.modal_view}>
-          <View style={styles.modal_container}>
-            <Text>
-              You solved {correctCount} out of {questionData?.length} questions
-            </Text>
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              <UI.Button onPress={goHome}>
-                <Text>Home</Text>
-              </UI.Button>
-              <UI.Button onPress={restart}>
-                <Text>Start again</Text>
-              </UI.Button>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <ResultModal
+        modalVisible={modalVisible}
+        correctCount={correctCount}
+        questionDataLength={questionData?.length}
+        handleCloseModal={() => setIsModalVisible(!modalVisible)}
+        handleGoHome={goHome}
+        restart={restart}
+      />
 
-      <View style={{ gap: 8 }}>
-        <View style={{ flexDirection: "row", gap: 7, alignItems: "center" }}>
+      <View style={styles.main_container}>
+        <View style={styles.quiz_title_container}>
           {quizIcons?.[typeId].icon}
-          <Text>{data?.title}</Text>
-        </View>
-
-        <View style={{ gap: 7 }}>
-          <Text>
-            Quiz {questionCount + 1} of {questionData?.length}
+          <Text style={styles.quiz_title}>{data?.title}</Text>
+          <Text style={{ textAlign: "center", fontSize: 16 }}>
+            Test your understanding with this comprehensive quiz
           </Text>
-          <Text>{currentQuestion?.question}</Text>
         </View>
 
-        <View style={{ gap: 8, width: 350 }}>
+        <View style={styles.question_container}>
+          <Text style={styles.quiestion_count_text}>
+            Question {questionCount + 1} of {questionData?.length}
+          </Text>
+          <Text style={styles.question_text}>{currentQuestion?.question}</Text>
+        </View>
+
+        <View style={styles.option_container}>
           {currentQuestion?.options?.map((option, index) => {
             return (
               <UI.Button
@@ -168,15 +121,7 @@ const QuizQuestions = () => {
                 disabled={isSubmitted}
                 onPress={() => setSelectedAnswer(option)}
               >
-                <View
-                  style={{
-                    backgroundColor: "transparent",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    gap: 10,
-                  }}
-                >
-                  <Text style={{ flex: 1, flexShrink: 1 }}>{option}</Text>
+                <View style={styles.option_text_container}>
                   {option === selectedAnswer ? (
                     <MaterialIcons
                       name="radio-button-checked"
@@ -190,53 +135,61 @@ const QuizQuestions = () => {
                       color="#aaa"
                     />
                   )}
+                  <Text style={styles.option_text}>{option}</Text>
                 </View>
               </UI.Button>
             );
           })}
-
-          <UI.Button
-            disabled={!selectedAnswer}
-            style={[
-              { alignItems: "center" },
-              selectedAnswer && styles.button_selected,
-            ]}
-            onPress={handleSubmit}
-          >
-            <Text>{isSubmitted ? "Next" : "Submit"}</Text>
-          </UI.Button>
         </View>
+
+        <UI.Button
+          disabled={!selectedAnswer}
+          style={[styles.submit_btn, selectedAnswer && styles.button_selected]}
+          onPress={handleSubmit}
+        >
+          <Text>{isSubmitted ? "Next" : "Submit"}</Text>
+        </UI.Button>
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  modal_view: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  modal_container: {
-    width: "100%",
-    maxWidth: 350,
-    borderRadius: 12,
-    gap: 10,
-    padding: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  quiz_container: {
+  loading_container: {
     display: "flex",
     alignItems: "center",
     height: "100%",
     padding: 40,
+  },
+  main_container: {
+    height: "100%",
+    gap: 18,
+  },
+  quiz_title_container: {
+    gap: 7,
+    alignItems: "center",
+  },
+  quiz_title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  question_container: {
+    gap: 10,
+  },
+  quiestion_count_text: {
+    fontSize: 16,
+  },
+  question_text: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  option_container: {
+    width: 350,
+    gap: 8,
+  },
+  option_text: {
+    flex: 1,
+    flexShrink: 1,
   },
   answer_btn: {
     borderWidth: 1,
@@ -246,7 +199,7 @@ const styles = StyleSheet.create({
   },
   button_selected: {
     borderWidth: 1,
-    borderColor: "#007bff",
+    borderColor: "#7C3AED",
   },
   correct_btn: {
     borderWidth: 1,
@@ -255,6 +208,17 @@ const styles = StyleSheet.create({
   wrong_btn: {
     borderWidth: 1,
     borderColor: "red",
+  },
+  option_text_container: {
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  submit_btn: {
+    alignItems: "center",
+    marginTop: "auto",
   },
 });
 
